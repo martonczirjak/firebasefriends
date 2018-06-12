@@ -9,9 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
-import android.widget.Toolbar;
+import android.support.v7.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     FirebaseFirestore db;
 
+    private Toolbar mToolbar;
+    private Button mainMenu;
 
     FirebaseAuth mAuth;
 
@@ -44,6 +48,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerView);
+//
+//        mToolbar = findViewById(R.id.mainBar);
+        getSupportActionBar().setTitle("BeerApp");
+
+        mainMenu = findViewById(R.id.main_logout);
+
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+
+
+        if( currentUser == null){
+            Intent startIntent = new Intent(MainActivity.this, StartActivity.class);
+            startActivity(startIntent);
+            finish();
+        }
+
+
+
 
 //        db = FirebaseFirestore.getInstance();
 //        db.collection("friends")
@@ -87,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -104,11 +127,33 @@ public class MainActivity extends AppCompatActivity {
                             }
                             UserAdapter userAdapter = new UserAdapter(userList);
                             recyclerView.setAdapter(userAdapter);
+
                             Toast.makeText(getApplicationContext(), String.valueOf(userList.size()).toString(), Toast.LENGTH_LONG).show();
                         } else {
                             Log.w("Nope", "Error getting documents.", task.getException());
                         }
                     }
                 });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+
+        if(item.getItemId() == R.id.main_logout){
+
+            FirebaseAuth.getInstance().signOut();
+            sendToStart();
+        }
+        return true;
     }
 }

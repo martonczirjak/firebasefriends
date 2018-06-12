@@ -9,4 +9,5 @@
     <string name="passw">Password</string>
     <string name="email">Email</string>
     <string name="disp_name">Display Name</string>
+    <string name="log_out">Log Out</string>
 </resources>
