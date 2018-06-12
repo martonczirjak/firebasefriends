@@ -112,7 +112,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                     HashMap<String, String> user = new HashMap<>();
                     user.put("name", display_name);
-                    user.put("status", "Online");
+                    user.put("profession", "Online");
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 
@@ -122,6 +122,9 @@ public class RegisterActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
                                     Toast.makeText(getApplicationContext(), "Added", Toast.LENGTH_LONG).show();
+                                    Intent mainIntent = new Intent( RegisterActivity.this, MainActivity.class);
+                                    startActivity(mainIntent);
+                                    finish();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                         @Override

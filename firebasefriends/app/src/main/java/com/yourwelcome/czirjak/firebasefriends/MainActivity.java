@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference ref;
     private List<User> userList = new ArrayList<User>();
     private RecyclerView recyclerView;
+    FirebaseFirestore db;
+
 
     FirebaseAuth mAuth;
 
@@ -42,26 +44,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerView);
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("friends")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("Here we go", document.getId() + " => " + document.getData());
-                                User user = new User(document.get("name").toString(), document.get("profession").toString());
-                                userList.add(user);
-                            }
-                            UserAdapter userAdapter = new UserAdapter(userList);
-                            recyclerView.setAdapter(userAdapter);
-                            Toast.makeText(getApplicationContext(), String.valueOf(userList.size()).toString(), Toast.LENGTH_LONG).show();
-                        } else {
-                            Log.w("Nope", "Error getting documents.", task.getException());
-                        }
-                    }
-                });
+
+//        db = FirebaseFirestore.getInstance();
+//        db.collection("friends")
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                Log.d("Here we go", document.getId() + " => " + document.getData());
+//                                User user = new User(document.get("name").toString(), document.get("profession").toString());
+//                                userList.add(user);
+//                            }
+//                            UserAdapter userAdapter = new UserAdapter(userList);
+//                            recyclerView.setAdapter(userAdapter);
+//                            Toast.makeText(getApplicationContext(), String.valueOf(userList.size()).toString(), Toast.LENGTH_LONG).show();
+//                        } else {
+//                            Log.w("Nope", "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
     }
 
     @Override
@@ -84,6 +87,28 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        db = FirebaseFirestore.getInstance();
+        db.collection("friends")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("Here we go", document.getId() + " => " + document.getData());
+                                User user = new User(document.get("name").toString(), document.get("profession").toString());
+                                userList.add(user);
+                            }
+                            UserAdapter userAdapter = new UserAdapter(userList);
+                            recyclerView.setAdapter(userAdapter);
+                            Toast.makeText(getApplicationContext(), String.valueOf(userList.size()).toString(), Toast.LENGTH_LONG).show();
+                        } else {
+                            Log.w("Nope", "Error getting documents.", task.getException());
+                        }
+                    }
+                });
+    }
 }
