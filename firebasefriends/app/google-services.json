@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "306679258157-id6h1ev756mim8n01018bnju75vptsui.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yourwelcome.czirjak.firebasefriends",
+            "certificate_hash": "a6e72e4b05dd8596cb195a41ac2e6a25f2f005d4"
+          }
+        },
+        {
           "client_id": "306679258157-8pdr4h9qfi7vf6s5mg7q8o9p3d9vighk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
