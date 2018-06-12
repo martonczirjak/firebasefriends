@@ -16,6 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.yourwelcome.czirjak.firebasefriends.StartActivity" />
+        <activity
+            android:name="com.yourwelcome.czirjak.firebasefriends.RegisterActivity"
+            android:parentActivityName="com.yourwelcome.czirjak.firebasefriends.StartActivity" />
+        <activity
+            android:name="com.yourwelcome.czirjak.firebasefriends.LoginActivity"
+            android:parentActivityName="com.yourwelcome.czirjak.firebasefriends.LoginActivity" />
+
     </application>
 
 </manifest>

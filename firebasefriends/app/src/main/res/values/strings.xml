@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">firebasefriends</string>
+    <string name="login_to_your_account">Login to your account</string>
+    <string name="already_have">Already Have</string>
+    <string name="registration">Registration</string>
+    <string name="beerchat">BeerChat</string>
+    <string name="create_new_account">Create New Account</string>
+    <string name="create_account">Create Account</string>
+    <string name="passw">Password</string>
+    <string name="email">Email</string>
+    <string name="disp_name">Display Name</string>
 </resources>
