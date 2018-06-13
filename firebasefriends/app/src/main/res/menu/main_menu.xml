@@ -3,6 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/sendButton"
+        android:title="@string/send" />
+    <item
         android:id="@+id/main_logout"
         android:title="@string/log_out" />
+
 </menu>

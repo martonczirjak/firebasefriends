@@ -19,7 +19,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
@@ -46,8 +49,13 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     FirebaseFirestore db;
 
+
+
+    private List<User> selectedUsers = new ArrayList<>();
+
     private Toolbar mToolbar;
     private Button mainMenu;
+    private Button sendButton;
 
     FirebaseAuth mAuth;
 
@@ -60,11 +68,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerView);
+
+
+
 //
 //        mToolbar = findViewById(R.id.mainBar);
         getSupportActionBar().setTitle("BeerApp");
 
+
         mainMenu = findViewById(R.id.main_logout);
+        sendButton = findViewById(R.id.sendButton);
+
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -168,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                             UserAdapter userAdapter = new UserAdapter(userList);
                             recyclerView.setAdapter(userAdapter);
 
-                            Toast.makeText(getApplicationContext(), String.valueOf(userList.size()).toString(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), String.valueOf(userList.get(0).isSelected()).toString(), Toast.LENGTH_LONG).show();
                         } else {
                             Log.w("Nope", "Error getting documents.", task.getException());
                         }
@@ -205,6 +219,19 @@ public class MainActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
             sendToStart();
         }
+
+        if(item.getItemId() == R.id.sendButton){
+
+            Toast.makeText(getApplicationContext(), String.valueOf(userList.get(0).isSelected()).toString(), Toast.LENGTH_LONG).show();
+        }
+
         return true;
     }
 }
+
+/*
+nem müködik a checkbox
+nem ugrál, csak nem jegyzi meg hogy ki van jelezve és ki nem
+holnapra dolog
+
+ */

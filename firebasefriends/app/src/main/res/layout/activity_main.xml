@@ -7,4 +7,5 @@
     android:layout_height="match_parent"
     app:layoutManager="android.support.v7.widget.LinearLayoutManager"
     tools:context=".MainActivity" >
+
 </android.support.v7.widget.RecyclerView>

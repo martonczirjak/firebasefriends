@@ -5,11 +5,20 @@ public class User {
     private String name;
     private String profession;
     private String UID;
+    boolean selected;
 
     public User(String name, String profession, String uid) {
         this.name = name;
         this.profession = profession;
         this.UID = uid;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     public String getProfession() {
