@@ -4,10 +4,12 @@ public class User {
 
     private String name;
     private String profession;
+    private String UID;
 
-    public User(String name, String profession) {
+    public User(String name, String profession, String uid) {
         this.name = name;
         this.profession = profession;
+        this.UID = uid;
     }
 
     public String getProfession() {
@@ -24,5 +26,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUID() {
+        return UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
     }
 }

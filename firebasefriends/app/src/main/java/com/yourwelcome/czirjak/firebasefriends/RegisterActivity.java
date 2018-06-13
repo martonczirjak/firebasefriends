@@ -112,7 +112,8 @@ public class RegisterActivity extends AppCompatActivity {
 
                     HashMap<String, String> user = new HashMap<>();
                     user.put("name", display_name);
-                    user.put("profession", "Online");
+                    user.put("profession", "Ki kell törölni");
+                    user.put("uid", mAuth.getCurrentUser().getUid());
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 

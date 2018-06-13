@@ -10,4 +10,6 @@
     <string name="email">Email</string>
     <string name="disp_name">Display Name</string>
     <string name="log_out">Log Out</string>
+    <string name="name">Name</string>
+    <string name="status">Status</string>
 </resources>

@@ -1,9 +1,17 @@
 package com.yourwelcome.czirjak.firebasefriends;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
 
+    //pushnotihoz
+
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +68,15 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if(intent.getAction().equals("push")){
+                    String message = intent.getStringExtra("message");
+                    showNotification("BeerApp", message);
+                }
+            }
+        };
 
 
         if( currentUser == null){
@@ -89,6 +110,23 @@ public class MainActivity extends AppCompatActivity {
 //                });
     }
 
+    private void showNotification(String title, String message) {
+
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Builder b = new NotificationCompat.Builder(getApplicationContext());
+        b.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setContentIntent(contentIntent);
+
+        NotificationManager notificationManager = (NotificationManager)getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1,b.build());
+    }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -120,9 +158,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            userList.clear();
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("Here we go", document.getId() + " => " + document.getData());
-                                User user = new User(document.get("name").toString(), document.get("profession").toString());
+                                User user = new User(document.get("name").toString(), document.get("profession").toString(), mAuth.getCurrentUser().getUid().toString());
+
                                 userList.add(user);
                             }
                             UserAdapter userAdapter = new UserAdapter(userList);
@@ -134,6 +174,17 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter("regComplete"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter("push"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
 
     @Override
